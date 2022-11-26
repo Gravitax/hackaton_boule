@@ -4,20 +4,76 @@
         
         <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
 
+        <style>
+            .hide {
+                display: none;
+            }
+            * {
+                padding: 0; margin: 0; border: 0;
+            }
+            video {
+                width: 100vw; height: 100vh; object-fit: cover;
+            }
+            #video_default { background-color: red; }
+        </style>
+
     </head>
     <body>
-        
-        <h1>Communicating from an Arduino to Node.js</h1>
+
+        <video id="video_snow" autoplay muted loop class="hide">
+            <source src="./snow.mp4" type="video/mp4">
+        </video>
+
+        <video id="video_default">
+            <source src="" type="video/mp4">
+        </video>
+
+        <!-- <iframe id="video_snow" class="hide" src="./snow.mp4?autoplay=1&controls=0"
+           allow="accelerometer; autoplay; mute; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+        </iframe>
+        <iframe id="video_jungle" class="hide" src="./snow.mp4?autoplay=1&controls=0"
+           allow="accelerometer; autoplay; mute; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+        </iframe>
+        <iframe id="video_sea" class="hide" src="./snow.mp4?autoplay=1&controls=0"
+           allow="accelerometer; autoplay; mute; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+        </iframe>
+        <iframe id="video_storm" class="hide" src="./snow.mp4?autoplay=1&controls=0"
+           allow="accelerometer; autoplay; mute; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+        </iframe>
+        <iframe id="video_default" class="" src=""
+            style="background-color: red;"
+           allow="accelerometer; autoplay; mute; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+        </iframe> -->
+
+
         
         <script>
-            
-        var socket = io();
 
-        socket.on('data', function(data) {
+            const   snow = document.getElementById("video_snow");
+            // const   jungle = document.getElementById("video_jungle");
+            // const   sea = document.getElementById("video_sea");
+            // const   storm = document.getElementById("video_storm");
+            const   video_default = document.getElementById("video_default");
             
-            console.log(data);
+            var socket = io();
 
-        });
+            socket.on('data', function(data) {
+
+                const   source = snow.querySelector("source");
+
+                if (data.indexOf("0x51 0xB4 0x1F 0xA3") == -1) {
+                    console.log("test");
+                    snow.classList.remove("hide");
+                    video_default.classList.add("hide");
+                } else {
+                    snow.classList.add("hide");
+                    // jungle.classList.add("hide");
+                    // sea.classList.add("hide");
+                    // storm.classList.add("hide");
+                    video_default.classList.remove("hide");
+                }
+
+            });
         
         </script>
         
